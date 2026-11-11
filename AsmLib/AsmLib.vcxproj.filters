@@ -38,4 +38,9 @@
       <Filter>Pliki źródłowe</Filter>
     </MASM>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="AsmLib.def">
+      <Filter>Pliki źródłowe</Filter>
+    </None>
+  </ItemGroup>
 </Project>

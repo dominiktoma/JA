@@ -1,5 +1,6 @@
 #include "pch.h"
 
-extern "C" __declspec(dllexport) int AddCpp(int a, int b) {
+extern "C" __declspec(dllexport) double AddCpp(double a, double b)
+{
     return a + b;
 }
