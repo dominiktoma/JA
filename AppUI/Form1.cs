@@ -1,4 +1,6 @@
+using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace AppUI
 {
@@ -8,12 +10,18 @@ namespace AppUI
         public static extern double AddAsm(double a, double b);
 
         [DllImport("CppLib.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern double AddCpp(double a, double b);
+        public static extern bool AddNoise(IntPtr piksele, int szerokosc, int wysokosc, int stride);
+
+        private Bitmap _originalBmp;
 
         public Form1()
         {
             InitializeComponent();
+            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
         }
+
+        public bool selectedLibrary = true;
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -35,31 +43,6 @@ namespace AppUI
 
         }
 
-        private void button1_Click_1(object sender, EventArgs e)
-        {
-            string input1 = num1.Text;
-            string input2 = num2.Text;
-            bool isFirstValid = double.TryParse(input1, out double number1);
-            bool isSecondValid = double.TryParse(input2, out double number2);
-            if (isFirstValid && isSecondValid)
-            {
-                double sum;
-                if (cppBtn.Checked)
-                {
-                    sum = AddCpp(number1, number2);
-                }
-                else
-                {
-                    sum = AddAsm(number1, number2);
-                }
-                result.Text = sum.ToString();
-            }
-            else
-            {
-                result.Text = "Błąd!";
-            }
-
-        }
 
         private void label1_Click(object sender, EventArgs e)
         {
@@ -77,6 +60,79 @@ namespace AppUI
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+            selectedLibrary = false;
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Title = "Wybierz plik BMP";
+                openFileDialog.Filter = "Pliki BMP (*.bmp)|*.bmp|Wszystkie pliki (*.*)|*.*";
+
+                if (openFileDialog.ShowDialog() != DialogResult.OK)
+                    return;
+
+                pictureBox1.Image?.Dispose();
+                pictureBox2.Image?.Dispose();
+                pictureBox2.Image = null;
+                _originalBmp?.Dispose();
+
+                using (Bitmap temp = new Bitmap(openFileDialog.FileName))
+                {
+                    _originalBmp = temp.Clone(
+                        new Rectangle(0, 0, temp.Width, temp.Height),
+                        PixelFormat.Format24bppRgb);
+                }
+
+                pictureBox1.Image = (Bitmap)_originalBmp.Clone();
+                label3.Text = "Wybrany plik: " + openFileDialog.FileName;
+
+            }
+        }
+
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+            selectedLibrary = true;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (selectedLibrary && _originalBmp != null)
+            {
+                Bitmap processedBmp = (Bitmap)_originalBmp.Clone();
+                Rectangle rect = new Rectangle(0, 0, processedBmp.Width, processedBmp.Height);
+                BitmapData bmpData = processedBmp.LockBits(rect, ImageLockMode.ReadWrite, processedBmp.PixelFormat);
+
+                bool success = false;
+                try
+                {
+                    success = AddNoise(bmpData.Scan0, processedBmp.Width, processedBmp.Height, bmpData.Stride);
+                }
+                finally
+                {
+                    processedBmp.UnlockBits(bmpData);
+                }
+                if (success)
+                {
+                    pictureBox2.Image?.Dispose();
+                    pictureBox2.Image = processedBmp;
+                }
+                else
+                {
+                    processedBmp.Dispose();
+                }
+            }
+            //else - asm
+        }
+
+        private void label3_Click(object sender, EventArgs e)
         {
 
         }

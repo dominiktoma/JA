@@ -28,132 +28,138 @@
         /// </summary>
         private void InitializeComponent()
         {
-            tableLayoutPanel1 = new TableLayoutPanel();
-            num2 = new TextBox();
-            btn = new Button();
-            num1 = new TextBox();
-            result = new Label();
-            flowLayoutPanel1 = new FlowLayoutPanel();
-            asmBtn = new RadioButton();
-            cppBtn = new RadioButton();
-            tableLayoutPanel1.SuspendLayout();
-            flowLayoutPanel1.SuspendLayout();
+            radioButton1 = new RadioButton();
+            radioButton2 = new RadioButton();
+            button1 = new Button();
+            button2 = new Button();
+            label1 = new Label();
+            label2 = new Label();
+            pictureBox1 = new PictureBox();
+            pictureBox2 = new PictureBox();
+            label3 = new Label();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             SuspendLayout();
             // 
-            // tableLayoutPanel1
+            // radioButton1
             // 
-            tableLayoutPanel1.ColumnCount = 3;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 34.1145821F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 65.8854141F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 315F));
-            tableLayoutPanel1.Controls.Add(num2, 1, 1);
-            tableLayoutPanel1.Controls.Add(btn, 0, 2);
-            tableLayoutPanel1.Controls.Add(num1, 0, 1);
-            tableLayoutPanel1.Controls.Add(result, 1, 2);
-            tableLayoutPanel1.Controls.Add(flowLayoutPanel1, 0, 0);
-            tableLayoutPanel1.Dock = DockStyle.Fill;
-            tableLayoutPanel1.Location = new Point(0, 0);
-            tableLayoutPanel1.Margin = new Padding(3, 2, 3, 2);
-            tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 3;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 48.05195F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 51.94805F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 260F));
-            tableLayoutPanel1.Size = new Size(700, 338);
-            tableLayoutPanel1.TabIndex = 0;
-            tableLayoutPanel1.Paint += tableLayoutPanel1_Paint;
+            radioButton1.AutoSize = true;
+            radioButton1.Location = new Point(12, 12);
+            radioButton1.Name = "radioButton1";
+            radioButton1.Size = new Size(61, 24);
+            radioButton1.TabIndex = 1;
+            radioButton1.Text = "ASM";
+            radioButton1.UseVisualStyleBackColor = true;
+            radioButton1.CheckedChanged += radioButton1_CheckedChanged;
             // 
-            // num2
+            // radioButton2
             // 
-            num2.Location = new Point(134, 40);
-            num2.Name = "num2";
-            num2.Size = new Size(107, 23);
-            num2.TabIndex = 2;
+            radioButton2.AutoSize = true;
+            radioButton2.Checked = true;
+            radioButton2.Location = new Point(12, 33);
+            radioButton2.Name = "radioButton2";
+            radioButton2.Size = new Size(59, 24);
+            radioButton2.TabIndex = 2;
+            radioButton2.TabStop = true;
+            radioButton2.Text = "C++";
+            radioButton2.UseVisualStyleBackColor = true;
+            radioButton2.CheckedChanged += radioButton2_CheckedChanged;
             // 
-            // btn
+            // button1
             // 
-            btn.Location = new Point(3, 80);
-            btn.Name = "btn";
-            btn.Size = new Size(107, 29);
-            btn.TabIndex = 1;
-            btn.Text = "oblicz";
-            btn.UseVisualStyleBackColor = true;
-            btn.Click += button1_Click_1;
+            button1.Location = new Point(12, 88);
+            button1.Name = "button1";
+            button1.Size = new Size(147, 52);
+            button1.TabIndex = 3;
+            button1.Text = "Select image";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click_1;
             // 
-            // num1
+            // button2
             // 
-            num1.Location = new Point(3, 40);
-            num1.Name = "num1";
-            num1.Size = new Size(107, 23);
-            num1.TabIndex = 3;
-            num1.TextChanged += num1_TextChanged;
+            button2.Location = new Point(12, 146);
+            button2.Name = "button2";
+            button2.Size = new Size(147, 52);
+            button2.TabIndex = 4;
+            button2.Text = "Start";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
             // 
-            // result
+            // label1
             // 
-            result.AutoSize = true;
-            result.Location = new Point(134, 77);
-            result.Name = "result";
-            result.Size = new Size(0, 15);
-            result.TabIndex = 4;
-            result.Click += label1_Click;
+            label1.AutoSize = true;
+            label1.Location = new Point(12, 201);
+            label1.Name = "label1";
+            label1.Size = new Size(122, 20);
+            label1.TabIndex = 5;
+            label1.Text = "Wynik programu:";
             // 
-            // flowLayoutPanel1
+            // label2
             // 
-            flowLayoutPanel1.Controls.Add(asmBtn);
-            flowLayoutPanel1.Controls.Add(cppBtn);
-            flowLayoutPanel1.Location = new Point(3, 3);
-            flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(114, 27);
-            flowLayoutPanel1.TabIndex = 7;
+            label2.AutoSize = true;
+            label2.Location = new Point(12, 221);
+            label2.Name = "label2";
+            label2.Size = new Size(0, 20);
+            label2.TabIndex = 6;
             // 
-            // asmBtn
+            // pictureBox1
             // 
-            asmBtn.AutoSize = true;
-            asmBtn.Checked = true;
-            asmBtn.Location = new Point(3, 3);
-            asmBtn.Name = "asmBtn";
-            asmBtn.Size = new Size(50, 19);
-            asmBtn.TabIndex = 6;
-            asmBtn.TabStop = true;
-            asmBtn.Text = "ASM";
-            asmBtn.UseVisualStyleBackColor = true;
+            pictureBox1.Location = new Point(165, 12);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(301, 290);
+            pictureBox1.TabIndex = 7;
+            pictureBox1.TabStop = false;
             // 
-            // cppBtn
+            // pictureBox2
             // 
-            cppBtn.AutoSize = true;
-            cppBtn.Location = new Point(59, 3);
-            cppBtn.Name = "cppBtn";
-            cppBtn.Size = new Size(49, 19);
-            cppBtn.TabIndex = 5;
-            cppBtn.Text = "C++";
-            cppBtn.UseVisualStyleBackColor = true;
+            pictureBox2.Location = new Point(487, 12);
+            pictureBox2.Name = "pictureBox2";
+            pictureBox2.Size = new Size(301, 290);
+            pictureBox2.TabIndex = 8;
+            pictureBox2.TabStop = false;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(165, 422);
+            label3.Name = "label3";
+            label3.Size = new Size(131, 20);
+            label3.TabIndex = 9;
+            label3.Text = "Wybrany plik: brak";
+            label3.Click += label3_Click;
             // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(700, 338);
-            Controls.Add(tableLayoutPanel1);
-            Margin = new Padding(3, 2, 3, 2);
+            ClientSize = new Size(800, 451);
+            Controls.Add(label3);
+            Controls.Add(pictureBox2);
+            Controls.Add(pictureBox1);
+            Controls.Add(label2);
+            Controls.Add(label1);
+            Controls.Add(button2);
+            Controls.Add(button1);
+            Controls.Add(radioButton2);
+            Controls.Add(radioButton1);
             Name = "Form1";
             Text = "Form1";
             Load += Form1_Load;
-            tableLayoutPanel1.ResumeLayout(false);
-            tableLayoutPanel1.PerformLayout();
-            flowLayoutPanel1.ResumeLayout(false);
-            flowLayoutPanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
-
-        private TableLayoutPanel tableLayoutPanel1;
-        private Button btn;
-        private TextBox num1;
-        private TextBox num2;
-        private Label result;
-        private RadioButton cppBtn;
-        private RadioButton asmBtn;
-        private FlowLayoutPanel flowLayoutPanel1;
+        private RadioButton radioButton1;
+        private RadioButton radioButton2;
+        private Button button1;
+        private Button button2;
+        private Label label1;
+        private Label label2;
+        private PictureBox pictureBox1;
+        private PictureBox pictureBox2;
+        private Label label3;
     }
 }
