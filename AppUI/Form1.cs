@@ -1,6 +1,6 @@
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace AppUI
 {
@@ -13,75 +13,33 @@ namespace AppUI
         public static extern bool AddNoise(IntPtr piksele, int szerokosc, int wysokosc, int stride);
 
         private Bitmap _originalBmp;
+        private bool selectedCppLibrary = true;
 
         public Form1()
         {
             InitializeComponent();
-            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-            pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
+            originalImageBox.SizeMode = PictureBoxSizeMode.Zoom;
+            processedImageBox.SizeMode = PictureBoxSizeMode.Zoom;
         }
 
-        public bool selectedLibrary = true;
-
-        private void button1_Click(object sender, EventArgs e)
+        private void asmButton_CheckedChanged(object sender, EventArgs e)
         {
-
+            selectedCppLibrary = false;
         }
 
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void num1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void library_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void radioButton1_CheckedChanged(object sender, EventArgs e)
-        {
-            selectedLibrary = false;
-        }
-
-        private void button1_Click_1(object sender, EventArgs e)
+        private void selectFileButton_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 openFileDialog.Title = "Wybierz plik BMP";
-                openFileDialog.Filter = "Pliki BMP (*.bmp)|*.bmp|Wszystkie pliki (*.*)|*.*";
+                openFileDialog.Filter = "Pliki BMP (*.bmp)|*.bmp";
 
                 if (openFileDialog.ShowDialog() != DialogResult.OK)
                     return;
 
-                pictureBox1.Image?.Dispose();
-                pictureBox2.Image?.Dispose();
-                pictureBox2.Image = null;
+                originalImageBox.Image?.Dispose();
+                processedImageBox.Image?.Dispose();
+                processedImageBox.Image = null;
                 _originalBmp?.Dispose();
 
                 using (Bitmap temp = new Bitmap(openFileDialog.FileName))
@@ -91,29 +49,32 @@ namespace AppUI
                         PixelFormat.Format24bppRgb);
                 }
 
-                pictureBox1.Image = (Bitmap)_originalBmp.Clone();
-                label3.Text = "Wybrany plik: " + openFileDialog.FileName;
+                originalImageBox.Image = (Bitmap)_originalBmp.Clone();
+                pathLabel.Text = "Wybrany plik: " + openFileDialog.FileName;
 
             }
         }
 
-        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        private void cppButton_CheckedChanged(object sender, EventArgs e)
         {
-            selectedLibrary = true;
+            selectedCppLibrary = true;
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void startButton_Click(object sender, EventArgs e)
         {
-            if (selectedLibrary && _originalBmp != null)
+            if (selectedCppLibrary && _originalBmp != null)
             {
                 Bitmap processedBmp = (Bitmap)_originalBmp.Clone();
                 Rectangle rect = new Rectangle(0, 0, processedBmp.Width, processedBmp.Height);
                 BitmapData bmpData = processedBmp.LockBits(rect, ImageLockMode.ReadWrite, processedBmp.PixelFormat);
 
                 bool success = false;
+                Stopwatch sw;
                 try
                 {
+                    sw = Stopwatch.StartNew();
                     success = AddNoise(bmpData.Scan0, processedBmp.Width, processedBmp.Height, bmpData.Stride);
+                    sw.Stop();
                 }
                 finally
                 {
@@ -121,8 +82,9 @@ namespace AppUI
                 }
                 if (success)
                 {
-                    pictureBox2.Image?.Dispose();
-                    pictureBox2.Image = processedBmp;
+                    processedImageBox.Image?.Dispose();
+                    processedImageBox.Image = processedBmp;
+                    timeLabel.Text = sw.ElapsedMilliseconds.ToString()+"ms";
                 }
                 else
                 {
@@ -130,11 +92,6 @@ namespace AppUI
                 }
             }
             //else - asm
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }
