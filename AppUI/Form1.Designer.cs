@@ -182,7 +182,7 @@ namespace AppUI
             // numericUpDown1
             // 
             numericUpDown1.Location = new Point(12, 268);
-            numericUpDown1.Maximum = new decimal(new int[] { 12, 0, 0, 0 });
+            numericUpDown1.Maximum = new decimal(new int[] { 64, 0, 0, 0 });
             numericUpDown1.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown1.Name = "numericUpDown1";
             numericUpDown1.Size = new Size(62, 27);

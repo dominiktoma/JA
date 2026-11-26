@@ -58,7 +58,7 @@ namespace AppUI
         /// Modified Registers and Flags: Standard volatile registers (RAX, RCX, RDX, R8-R11) and CPU status flags (ZF, CF, SF, OF) restored per cdecl convention.
         /// </summary>
         [DllImport("CppLib.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern bool AddCppNoise(IntPtr pixels, int width, int height, int stride);
+        public static extern void AddCppNoise(IntPtr pixels, int width, int height, int stride);
 
         // =========================================================================
         // CLASS FIELDS (VARIABLES)
@@ -175,8 +175,9 @@ namespace AppUI
         private void startButton_Click(object sender, EventArgs e)
         {
             // Ensure C++ library is selected and a valid source image is loaded
-            if (_selectedCppLibrary && _originalBmp != null)
+            if (_selectedCppLibrary && _originalBmp != null && !string.IsNullOrWhiteSpace(numericUpDown1.Text))
             {
+                int numberOfThreads = (int)numericUpDown1.Value;
                 // Create a working copy of the original bitmap
                 Bitmap processedBmp = (Bitmap)_originalBmp.Clone();
                 Rectangle rect = new Rectangle(0, 0, processedBmp.Width, processedBmp.Height);
@@ -184,15 +185,39 @@ namespace AppUI
                 // Lock bitmap bits in system memory to obtain a direct pointer for unmanaged code
                 BitmapData bmpData = processedBmp.LockBits(rect, ImageLockMode.ReadWrite, processedBmp.PixelFormat);
 
-                bool success = false; // Stores the execution result of the native function
                 Stopwatch sw;         // High-resolution timer for benchmarking DLL execution
 
                 try
                 {
-                    sw = Stopwatch.StartNew();
+                   
                     // Execute the external C++ noise generation function
-                    success = AddCppNoise(bmpData.Scan0, processedBmp.Width, processedBmp.Height, bmpData.Stride);
+                    Thread[] threads = new Thread[numberOfThreads];
+
+                    int rowsPerThread = processedBmp.Height / numberOfThreads;
+                    sw = Stopwatch.StartNew();
+
+                    for (int i = 0; i < numberOfThreads; i++)
+                    {
+                        int startRow = i * rowsPerThread;
+                        int rowsToProcess = (i == numberOfThreads - 1) ? (processedBmp.Height - startRow): rowsPerThread;
+
+                        IntPtr startPtr = IntPtr.Add(bmpData.Scan0, startRow * bmpData.Stride);
+
+                        threads[i] = new Thread(() =>
+                        {
+                            AddCppNoise(startPtr, processedBmp.Width, rowsToProcess, bmpData.Stride);
+                        });
+
+                        threads[i].Start();
+                    }
+
+                    for (int i = 0; i < numberOfThreads; i++)
+                    {
+                        threads[i].Join();
+                    }
+
                     sw.Stop();
+
                 }
                 finally
                 {
@@ -200,17 +225,12 @@ namespace AppUI
                     processedBmp.UnlockBits(bmpData);
                 }
 
-                // Update UI if processing succeeded; otherwise, release the working bitmap
-                if (success)
-                {
-                    processedImageBox.Image?.Dispose();
-                    processedImageBox.Image = processedBmp;
-                    timeLabel.Text = sw.ElapsedMilliseconds.ToString() + " ms";
-                }
-                else
-                {
-                    processedBmp.Dispose();
-                }
+
+                processedImageBox.Image?.Dispose();
+                processedImageBox.Image = processedBmp;
+                timeLabel.Text = sw.ElapsedMilliseconds.ToString() + " ms";
+             
+
             }
             // else - ASM implementation branch
         }
