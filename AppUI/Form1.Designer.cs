@@ -52,17 +52,16 @@ namespace AppUI
             processedImageBox = new PictureBox();
             pathLabel = new Label();
             timeLabel = new Label();
-            // CHANGE: Added TableLayoutPanel to ensure both PictureBoxes scale equally (50%/50%) without overlapping.
             imageTableLayoutPanel = new TableLayoutPanel();
-
+            numericUpDown1 = new NumericUpDown();
+            label3 = new Label();
             ((System.ComponentModel.ISupportInitialize)originalImageBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)processedImageBox).BeginInit();
             imageTableLayoutPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             SuspendLayout();
-
             // 
-            // asmButton - Radio button to select the Assembly (ASM) processing implementation.
-            // Remains anchored to Top-Left (default) as part of the fixed-width control sidebar.
+            // asmButton
             // 
             asmButton.AutoSize = true;
             asmButton.Location = new Point(12, 12);
@@ -72,10 +71,8 @@ namespace AppUI
             asmButton.Text = "ASM";
             asmButton.UseVisualStyleBackColor = true;
             asmButton.CheckedChanged += asmButton_CheckedChanged;
-
             // 
-            // cppButton - Radio button to select the C++ processing implementation (default selected).
-            // Remains anchored to Top-Left (default) as part of the fixed-width control sidebar.
+            // cppButton
             // 
             cppButton.AutoSize = true;
             cppButton.Checked = true;
@@ -87,10 +84,8 @@ namespace AppUI
             cppButton.Text = "C++";
             cppButton.UseVisualStyleBackColor = true;
             cppButton.CheckedChanged += cppButton_CheckedChanged;
-
             // 
-            // selectFileButton - Button that opens a file dialog to load an input image.
-            // Remains anchored to Top-Left so sidebar controls stay aligned on resize.
+            // selectFileButton
             // 
             selectFileButton.Location = new Point(12, 88);
             selectFileButton.Name = "selectFileButton";
@@ -99,10 +94,8 @@ namespace AppUI
             selectFileButton.Text = "Select image";
             selectFileButton.UseVisualStyleBackColor = true;
             selectFileButton.Click += selectFileButton_Click;
-
             // 
-            // startButton - Button that triggers the Gaussian noise processing algorithm.
-            // Remains anchored to Top-Left below the file selection button.
+            // startButton
             // 
             startButton.Location = new Point(12, 146);
             startButton.Name = "startButton";
@@ -111,9 +104,8 @@ namespace AppUI
             startButton.Text = "Start";
             startButton.UseVisualStyleBackColor = true;
             startButton.Click += startButton_Click;
-
             // 
-            // label1 - Static header label displaying "Wynik programu:" (Program result).
+            // label1
             // 
             label1.AutoSize = true;
             label1.Location = new Point(12, 201);
@@ -121,31 +113,58 @@ namespace AppUI
             label1.Size = new Size(122, 20);
             label1.TabIndex = 5;
             label1.Text = "Wynik programu:";
-
             // 
-            // label2 - Auxiliary label for program output messages.
-            // CHANGE: Shifted Y position slightly (from 221 to 245) to prevent overlapping with timeLabel.
+            // label2
             // 
             label2.AutoSize = true;
             label2.Location = new Point(12, 245);
             label2.Name = "label2";
             label2.Size = new Size(0, 20);
             label2.TabIndex = 6;
-
             // 
-            // timeLabel - Dynamic label displaying the execution time of the selected algorithm.
-            // Kept at (12, 221) right under label1.
+            // originalImageBox
+            // 
+            originalImageBox.BorderStyle = BorderStyle.FixedSingle;
+            originalImageBox.Dock = DockStyle.Fill;
+            originalImageBox.Location = new Point(0, 0);
+            originalImageBox.Margin = new Padding(0, 0, 10, 0);
+            originalImageBox.Name = "originalImageBox";
+            originalImageBox.Size = new Size(301, 395);
+            originalImageBox.SizeMode = PictureBoxSizeMode.Zoom;
+            originalImageBox.TabIndex = 7;
+            originalImageBox.TabStop = false;
+            // 
+            // processedImageBox
+            // 
+            processedImageBox.BorderStyle = BorderStyle.FixedSingle;
+            processedImageBox.Dock = DockStyle.Fill;
+            processedImageBox.Location = new Point(321, 0);
+            processedImageBox.Margin = new Padding(10, 0, 0, 0);
+            processedImageBox.Name = "processedImageBox";
+            processedImageBox.Size = new Size(302, 395);
+            processedImageBox.SizeMode = PictureBoxSizeMode.Zoom;
+            processedImageBox.TabIndex = 8;
+            processedImageBox.TabStop = false;
+            // 
+            // pathLabel
+            // 
+            pathLabel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            pathLabel.AutoEllipsis = true;
+            pathLabel.Location = new Point(165, 415);
+            pathLabel.Name = "pathLabel";
+            pathLabel.Size = new Size(623, 23);
+            pathLabel.TabIndex = 9;
+            pathLabel.Text = "Wybrany plik: brak";
+            // 
+            // timeLabel
             // 
             timeLabel.AutoSize = true;
             timeLabel.Location = new Point(12, 221);
             timeLabel.Name = "timeLabel";
             timeLabel.Size = new Size(0, 20);
             timeLabel.TabIndex = 10;
-
             // 
-            // imageTableLayoutPanel - Responsive 2-column grid container for side-by-side image previews.
-            // CHANGE: Created this container and anchored it to all four sides (Top, Bottom, Left, Right)
-            // so both PictureBoxes grow and shrink proportionally when the form is resized.
+            // imageTableLayoutPanel
             // 
             imageTableLayoutPanel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             imageTableLayoutPanel.ColumnCount = 2;
@@ -159,55 +178,33 @@ namespace AppUI
             imageTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             imageTableLayoutPanel.Size = new Size(623, 395);
             imageTableLayoutPanel.TabIndex = 11;
-
             // 
-            // originalImageBox - PictureBox displaying the source (unprocessed) image.
-            // CHANGE: Replaced fixed Location/Size with DockStyle.Fill inside imageTableLayoutPanel,
-            // added right margin for spacing, and set SizeMode to Zoom so images scale proportionally.
+            // numericUpDown1
             // 
-            originalImageBox.BorderStyle = BorderStyle.FixedSingle;
-            originalImageBox.Dock = DockStyle.Fill;
-            originalImageBox.Margin = new Padding(0, 0, 10, 0);
-            originalImageBox.Name = "originalImageBox";
-            originalImageBox.SizeMode = PictureBoxSizeMode.Zoom;
-            originalImageBox.TabIndex = 7;
-            originalImageBox.TabStop = false;
-
+            numericUpDown1.Location = new Point(12, 268);
+            numericUpDown1.Maximum = new decimal(new int[] { 12, 0, 0, 0 });
+            numericUpDown1.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numericUpDown1.Name = "numericUpDown1";
+            numericUpDown1.Size = new Size(62, 27);
+            numericUpDown1.TabIndex = 12;
+            numericUpDown1.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
-            // processedImageBox - PictureBox displaying the output image after applying Gaussian noise.
-            // CHANGE: Replaced fixed Location/Size with DockStyle.Fill inside imageTableLayoutPanel,
-            // added left margin for spacing, and set SizeMode to Zoom so images scale proportionally.
+            // label3
             // 
-            processedImageBox.BorderStyle = BorderStyle.FixedSingle;
-            processedImageBox.Dock = DockStyle.Fill;
-            processedImageBox.Margin = new Padding(10, 0, 0, 0);
-            processedImageBox.Name = "processedImageBox";
-            processedImageBox.SizeMode = PictureBoxSizeMode.Zoom;
-            processedImageBox.TabIndex = 8;
-            processedImageBox.TabStop = false;
-
+            label3.AutoSize = true;
+            label3.Location = new Point(12, 245);
+            label3.Name = "label3";
+            label3.Size = new Size(109, 20);
+            label3.TabIndex = 13;
+            label3.Text = "Liczba wątków:";
             // 
-            // pathLabel - Label displaying the file path of the currently selected image.
-            // CHANGE: Anchored to Bottom | Left | Right, disabled AutoSize, enabled AutoEllipsis,
-            // and moved to Y=415 so it stays pinned below the scaling image container without clipping.
-            // 
-            pathLabel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            pathLabel.AutoEllipsis = true;
-            pathLabel.Location = new Point(165, 415);
-            pathLabel.Name = "pathLabel";
-            pathLabel.Size = new Size(623, 23);
-            pathLabel.TabIndex = 9;
-            pathLabel.Text = "Wybrany plik: brak";
-
-            // 
-            // Form1 - Main application window.
-            // CHANGE: Added MinimumSize (650x380) to prevent UI controls from overlapping or clipping
-            // when the user shrinks the window.
+            // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 451);
-            MinimumSize = new Size(650, 380);
+            Controls.Add(label3);
+            Controls.Add(numericUpDown1);
             Controls.Add(timeLabel);
             Controls.Add(pathLabel);
             Controls.Add(imageTableLayoutPanel);
@@ -217,11 +214,13 @@ namespace AppUI
             Controls.Add(selectFileButton);
             Controls.Add(cppButton);
             Controls.Add(asmButton);
+            MinimumSize = new Size(650, 380);
             Name = "Form1";
             Text = "Gaussian noise app";
             ((System.ComponentModel.ISupportInitialize)originalImageBox).EndInit();
             ((System.ComponentModel.ISupportInitialize)processedImageBox).EndInit();
             imageTableLayoutPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -240,5 +239,7 @@ namespace AppUI
         private Label pathLabel;
         private Label timeLabel;
         private TableLayoutPanel imageTableLayoutPanel; // Added responsive container for image boxes
+        private NumericUpDown numericUpDown1;
+        private Label label3;
     }
 }
