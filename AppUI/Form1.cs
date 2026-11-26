@@ -58,7 +58,7 @@ namespace AppUI
         /// Modified Registers and Flags: Standard volatile registers (RAX, RCX, RDX, R8-R11) and CPU status flags (ZF, CF, SF, OF) restored per cdecl convention.
         /// </summary>
         [DllImport("CppLib.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern bool AddNoise(IntPtr pixels, int width, int height, int stride);
+        public static extern bool AddCppNoise(IntPtr pixels, int width, int height, int stride);
 
         // =========================================================================
         // CLASS FIELDS (VARIABLES)
@@ -191,7 +191,7 @@ namespace AppUI
                 {
                     sw = Stopwatch.StartNew();
                     // Execute the external C++ noise generation function
-                    success = AddNoise(bmpData.Scan0, processedBmp.Width, processedBmp.Height, bmpData.Stride);
+                    success = AddCppNoise(bmpData.Scan0, processedBmp.Width, processedBmp.Height, bmpData.Stride);
                     sw.Stop();
                 }
                 finally
