@@ -55,7 +55,7 @@ extern "C" __declspec(dllexport) void AddCppNoise(uint8_t* startPtr, int width, 
     std::mt19937 gen(rd());
 
     // Standard deviation (sigma) defining the spread/intensity of the Gaussian noise.
-    const double sigma = 10;
+    const double sigma = 1;
     // Normal (Gaussian) probability distribution with mean = 0.0 and standard deviation = sigma.
     std::normal_distribution<double> dist(0.0, sigma);
 
@@ -79,8 +79,9 @@ extern "C" __declspec(dllexport) void AddCppNoise(uint8_t* startPtr, int width, 
             else if (noisyValue > 255)
                 noisyValue = 255;
 
+
             // Cast the clamped integer back to uint8_t and overwrite the original channel byte in-place.
-            row[x] = static_cast<uint8_t>(noisyValue);
+            row[x] = noisyValue;
         }
     }
 

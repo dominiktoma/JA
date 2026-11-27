@@ -221,7 +221,7 @@ namespace AppUI
                 }
                 finally
                 {
-                    // Always unlock the memory bits regardless of whether an exception occurred
+                    // Unlock the memory bits regardless of whether an exception occurred
                     processedBmp.UnlockBits(bmpData);
                 }
 
